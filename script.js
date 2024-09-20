@@ -1,84 +1,106 @@
-// Getting the computer choice for the game
-function getComputerChoice() {
-    const choices = ['rock', 'paper', 'scissors'];
-    const index = Math.floor(Math.random() * choices.length); // Random index 0, 1, or 2
-    return choices[index];
+const roundResult = document.querySelector('#round-status');
+const startBtn = document.querySelector('#start-btn');
+const roundSummary = document.querySelector('#round-result');
+const humanScore = document.querySelector('#human-score');
+const computerScore = document.querySelector('#computer-score');
+let humanScorePoint = 0;
+let computerScorePoint = 0;
+let gameOn = false;
+let matchSummary = document.querySelector('#match-summary');
+
+function randomNum() {
+    const choices = ['rock', 'paper', 'scissor'];
+    let rIndx = Math.floor(Math.random() * choices.length);
+    return choices[rIndx];
 }
 
-// Getting the human choice for the game
+let humanChoice = '';
+
 function getHumanChoice() {
-    while (true) {
-        let humanChoice = prompt("Enter your choice between ('rock', 'paper', 'scissors'):");
-        let choice = humanChoice.toLowerCase();
-        if (choice === 'rock' || choice === 'paper' || choice === 'scissors') {
-            return choice;
-        } else {
-            alert("INVALID CHOICE !!! Check your spelling and try again!");
-        }
-    }
+    let images = document.querySelectorAll('.img');
+    images.forEach(img => {
+        img.addEventListener('click', (e) => {
+            let idNm = e.target.id;
+            if (idNm === 'rock-img') {
+                humanChoice = 'rock';
+            } else if (idNm === 'paper-img') {
+                humanChoice = 'paper';
+            } else {
+                humanChoice = 'scissor';
+            }
+            if (gameOn) {
+                playRound();
+            }
+        });
+    });
 }
+const p = document.createElement('p');
+const p2 = document.createElement('p');
+function playRound() {
+    let computer = randomNum();
+    let human = humanChoice;
+    if (human === '') return; // Prevent playing if no choice
 
-// Initializing the scores
-let humanScore = 0;
-let computerScore = 0;
+    
+    
 
-// Main game function
-function playRound(humanChoice, computerChoice) {
-    if (humanChoice === computerChoice) {
-        return 'DRAW !!!';
-    } else if (humanChoice === 'rock' && computerChoice === 'paper') {
-        computerScore += 1;
-        return 'Computer wins !!! Paper beats rock';
-    } else if (humanChoice === 'rock' && computerChoice === 'scissors') {
-        humanScore += 1;
-        return 'Human wins !!! Rock beats scissors';
-    } else if (humanChoice === 'paper' && computerChoice === 'rock') {
-        humanScore += 1;
-        return 'Human wins !!! Paper beats rock';
-    } else if (humanChoice === 'paper' && computerChoice === 'scissors') {
-        computerScore += 1;
-        return 'Computer wins !!! Scissors beats paper';
-    } else if (humanChoice === 'scissors' && computerChoice === 'rock') {
-        computerScore += 1;
-        return 'Computer wins !!! Rock beats scissors';
-    } else if (humanChoice === 'scissors' && computerChoice === 'paper') {
-        humanScore += 1;
-        return 'Human wins !!! Scissors beats paper';
-    }
-}
-
-// Function to display the final result
-function displayResult() {
-    if (humanScore > computerScore) {
-        return `Human wins!! The score is Human: ${humanScore} and Computer: ${computerScore}`;
-    } else if (humanScore < computerScore) {
-        return `Computer wins!! The score is Human: ${humanScore} and Computer: ${computerScore}`;
+    if (human === computer) {
+        p.textContent = 'TIE!';
+    } else if (
+        (human === 'rock' && computer === 'scissor') ||
+        (human === 'paper' && computer === 'rock') ||
+        (human === 'scissor' && computer === 'paper')
+    ) {
+        p.textContent = 'You win!!';
+        humanScorePoint++;
     } else {
-        return `Match is a draw!! The score is Human: ${humanScore} and Computer: ${computerScore}`;
+        p.textContent = 'Computer wins!!';
+        computerScorePoint++;
+    }
+
+    p2.textContent = `You chose ${human} and Computer chose ${computer}`;
+    p.classList.toggle('round-result-2');
+    p2.classList.toggle('round-result-2');
+    roundSummary.appendChild(p);
+    roundResult.appendChild(p2);
+    
+    gameSetter();
+}
+
+function gameSetter() {
+    matchSummary.removeAttribute('hidden');
+    humanScore.textContent = `${humanScorePoint}`;
+    computerScore.textContent = `${computerScorePoint}`;
+    
+    if (humanScorePoint === 5 || computerScorePoint === 5) {
+        gameOn = false;
+        let restartBtn = document.querySelector('#restart-btn');
+        restartBtn.removeAttribute('hidden');
+        startBtn.setAttribute('hidden', true);
+        restartBtn.addEventListener('click', restartGame);
     }
 }
 
-// Function to play the game
 function playGame() {
-    let continuePlaying = true;
-    
-    while (continuePlaying) {
-        let humanChoice = getHumanChoice();
-        let computerChoice = getComputerChoice();
-        let roundResult = playRound(humanChoice, computerChoice);
-        
-        console.log(`You chose: ${humanChoice}`);
-        console.log(`Computer chose: ${computerChoice}`);
-        console.log(roundResult);
-        console.log(`Current score - Human: ${humanScore}, Computer: ${computerScore}`);
-        
-        // Ask if the user wants to play another round
-        continuePlaying = confirm("Do you want to play another round?");
-    }
-    
-    // Display final result after exiting the loop
-    console.log(displayResult());
+    startBtn.setAttribute('hidden', true);
+    gameOn = true;
+    humanChoice = '';
+    roundSummary.innerHTML = ''; 
+    matchSummary.setAttribute('hidden', true);
+    humanScorePoint = 0;
+    computerScorePoint = 0;
+    humanScore.textContent = '0';
+    computerScore.textContent = '0';
 }
 
-// Start the game
-playGame();
+function restartGame() {
+    let restartBtn = document.querySelector('#restart-btn');
+    restartBtn.setAttribute('hidden',true);
+    startBtn.setAttribute('hidden', true);
+    roundResult.innerHTML = '';
+    roundSummary.innerHTML = '';
+    playGame();
+}
+
+startBtn.addEventListener('click', playGame);
+getHumanChoice(); 

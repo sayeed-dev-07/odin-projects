@@ -1,0 +1,77 @@
+body{
+    margin: 0;
+    padding: 0;
+    background-color: royalblue;
+    color: white;
+}
+img{
+    height: 100px;
+    cursor: pointer;
+}
+.images-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    margin-top: 30px;
+}
+.headline{
+    text-align: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+.result-container{
+    text-align: center;
+}
+#round-result{
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 25px;
+    color: rgb(239, 234, 235);
+    font-weight: bold;
+    margin-top: 20px;
+}
+.btn-container{
+    margin-top: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+.btn{
+    padding: 15px 30px;
+    font-size: medium;
+    font-weight: bold;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#round-status{
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 20px;
+    line-height: 30px;
+}
+span{
+    color: #ddd6d6;
+}
+
+.round-result-2{
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 25px;
+    color: rgb(239, 234, 235);
+    font-weight: bold;
+    margin-top: 20px;
+}
+#match-summary{
+    font-family: sans-serif;
+    text-align: center;
+    font-size: 25px;
+    color: rgb(239, 234, 235);
+    font-weight: bold;
+    margin-top: 20px;
+}
